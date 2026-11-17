@@ -332,8 +332,11 @@ endif
 ifeq ($(SAME_CORE),a7800)
 	SOURCES      := src/mame/atari/a7800.cpp
 	SAME_LAYOUTS :=
+else ifeq ($(SAME_CORE),pv1000)
+	SOURCES      := src/mame/casio/pv1000.cpp
+	SAME_LAYOUTS :=
 else ifneq ($(SAME_CORE),)
-$(error Unknown SAME_CORE '$(SAME_CORE)'. Supported: a7800)
+$(error Unknown SAME_CORE '$(SAME_CORE)'. Supported: a7800 pv1000)
 endif
 
 ifneq ($(SAME_CORE),)

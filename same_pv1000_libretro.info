@@ -1,0 +1,36 @@
+# Software Information
+display_name = "Casio - PV-1000 (SAME PV1000)"
+authors = "MAMEdev|jfroco"
+supported_extensions = "bin"
+corename = "SAME PV1000"
+license = "GPLv2+"
+permissions = ""
+display_version = "Git"
+categories = "Emulator"
+
+# Hardware Information
+manufacturer = "Casio"
+systemname = "PV-1000"
+systemid = "casio_pv1000"
+
+# Libretro Features
+supports_no_game = "false"
+database = "Casio - PV-1000"
+savestate = "true"
+savestate_features = "deterministic"
+cheats = "false"
+input_descriptors = "true"
+memory_descriptors = "false"
+libretro_saves = "false"
+core_options = "true"
+core_options_version = "1.0"
+load_subsystem = "false"
+hw_render = "false"
+needs_fullpath = "true"
+disk_control = "false"
+is_experimental = "true"
+
+# BIOS/Firmware
+firmware_count = 0
+
+description = "SAME PV1000 is a S(ingle) A(rcade) M(achine) E(mulator) for libretro, built from MAME libretro (libretro-same). It includes only MAME's Casio PV-1000 driver and loads .bin cartridges directly, without MAME's menus. No BIOS is needed."

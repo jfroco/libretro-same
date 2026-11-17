@@ -24,6 +24,13 @@
 #define SAME_MEDIA         "-cart"
 #define SAME_EXTENSIONS    "a78|bin"
 
+#elif defined(SAME_CORE_pv1000)
+#define CORE_NAME          "same_pv1000"
+#define SAME_LIBRARY_NAME  "SAME_PV1000"
+#define SAME_SYSTEM        "pv1000"
+#define SAME_MEDIA         "-cart"
+#define SAME_EXTENSIONS    "bin"
+
 #elif defined(SAME_CORE)
 #error "Unknown SAME_CORE_<name>: add an entry to same_cores.h"
 #endif
