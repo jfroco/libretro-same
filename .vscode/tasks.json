@@ -1,0 +1,61 @@
+{
+  // Build tasks for the devcontainer. Each build produces same_a7800_libretro.dll / .so in
+  // the repository root (the two Linux builds write the same .so name: build one at a time).
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Build Windows x86_64 (same_a7800)",
+      "type": "shell",
+      // CC/CXX/AR go in the environment, not as make arguments: arguments would also reach
+      // the build of genie (MAME's project generator, a Linux tool) and make it use MinGW.
+      "command": "CC=x86_64-w64-mingw32-gcc CXX=x86_64-w64-mingw32-g++ AR=x86_64-w64-mingw32-gcc-ar make -f Makefile.libretro platform=win64 SAME_CORE=a7800 MINGW64=/usr -j$(nproc)",
+      "group": "build",
+      "problemMatcher": ["$gcc"]
+    },
+    {
+      "label": "Build Linux x86_64 (same_a7800)",
+      "type": "shell",
+      "command": "make -f Makefile.libretro platform=unix SAME_CORE=a7800 -j$(nproc)",
+      "group": "build",
+      "problemMatcher": ["$gcc"]
+    },
+    {
+      // Cross compile with Ubuntu's aarch64-linux-gnu toolchain (glibc 2.39).
+      "label": "Build Linux aarch64 (same_a7800)",
+      "type": "shell",
+      // PLATFORM, LIBRETRO_CPU, CROSS_BUILD and ARCHITECTURE are MAME options:
+      // - LIBRETRO_CPU would otherwise be the container's CPU (x86_64).
+      // - An empty ARCHITECTURE builds MAME's "linux" target instead of "linux_x64",
+      //   whose -m64 option aarch64 gcc rejects (MAME's webOS block does the same).
+      // - Its own BUILDDIR keeps the aarch64 objects apart from the x86_64 ones.
+      "command": "CC=aarch64-linux-gnu-gcc CXX=aarch64-linux-gnu-g++ AR=aarch64-linux-gnu-gcc-ar make -f Makefile.libretro platform=unix SAME_CORE=a7800 PLATFORM=arm64 LIBRETRO_CPU=arm64 CROSS_BUILD=1 ARCHITECTURE= BUILDDIR=build/same_a7800-aarch64 -j$(nproc)",
+      "group": "build",
+      "problemMatcher": ["$gcc"]
+    },
+    {
+      "label": "Check Windows DLL",
+      "type": "shell",
+      "command": "file same_a7800_libretro.dll && x86_64-w64-mingw32-objdump -p same_a7800_libretro.dll | grep 'DLL Name' && x86_64-w64-mingw32-objdump -p same_a7800_libretro.dll | grep -oE 'retro_[a-z_]+' | sort -u",
+      "problemMatcher": []
+    },
+    {
+      "label": "Check Linux x86_64 .so",
+      "type": "shell",
+      "command": "file same_a7800_libretro.so && ldd same_a7800_libretro.so && nm -D --defined-only same_a7800_libretro.so | grep -oE 'retro_[a-z_]+' | sort -u && objdump -T same_a7800_libretro.so | grep -oE 'GLIBC_[0-9.]+' | sort -uV | tail -1",
+      "problemMatcher": []
+    },
+    {
+      "label": "Check Linux aarch64 .so",
+      "type": "shell",
+      "command": "file same_a7800_libretro.so && aarch64-linux-gnu-readelf -d same_a7800_libretro.so | grep NEEDED && aarch64-linux-gnu-nm -D --defined-only same_a7800_libretro.so | grep -oE 'retro_[a-z_]+' | sort -u && aarch64-linux-gnu-objdump -T same_a7800_libretro.so | grep -oE 'GLIBC_[0-9.]+' | sort -uV | tail -1",
+      "problemMatcher": []
+    },
+    {
+      // Deletes the objects of every platform: the next build starts from scratch (~40 min).
+      "label": "Clean (same_a7800)",
+      "type": "shell",
+      "command": "rm -rf build/same_a7800 build/same_a7800-aarch64 same_a7800_libretro.dll same_a7800_libretro.so",
+      "problemMatcher": []
+    }
+  ]
+}

@@ -369,6 +369,11 @@ void Extract_AllPath(const char *srcpath)
       log_cb(RETRO_LOG_ERROR, "Error parsing system name: \"%s\"\n", srcpath);
    }
 
+#ifdef SAME_SYSTEM
+   /* libretro-same: the system is fixed, not taken from the content's folder name. */
+   strcpy(MsystemName, SAME_SYSTEM);
+#endif
+
    /* Get the parent path. */
    result = parseParentPath(srcpath, MparentPath);
 
@@ -583,10 +588,20 @@ static void Set_Path_Option(void)
    Add_Option((char*)"-rompath");
 
    if (retro_system_directory)
+#ifdef SAME_SYSTEM
+      /* libretro-same: also look for the BIOS directly in RetroArch's system folder,
+         as other cores do. */
+      snprintf(tmp_dir, sizeof(tmp_dir), "%s;%s;%s%c%s%c%s;%s%c%s%c%s",
+            g_rom_dir,
+            retro_system_directory,
+            retro_system_directory, slash, CORE_NAME, slash, "bios",
+            retro_system_directory, slash, CORE_NAME, slash, "roms");
+#else
       snprintf(tmp_dir, sizeof(tmp_dir), "%s;%s%c%s%c%s;%s%c%s%c%s",
             g_rom_dir,
             retro_system_directory, slash, CORE_NAME, slash, "bios",
             retro_system_directory, slash, CORE_NAME, slash, "roms");
+#endif
    else
       snprintf(tmp_dir, sizeof(tmp_dir), "%s", g_rom_dir);
 
@@ -638,6 +653,12 @@ static int execute_game(char *path)
 
    if (!boot_to_osd_enable && g_rom_dir[0])
    {
+#ifdef SAME_SYSTEM
+      /* libretro-same: run "<system> <media option> <content path>". */
+      Add_Option(SAME_SYSTEM);
+      Add_Option(SAME_MEDIA);
+      Add_Option(gameName);
+#else
       if (softlist_enable)
       {
          if (!arcade)
@@ -667,6 +688,7 @@ static int execute_game(char *path)
             Add_Option((char*)gameName);
          }
       }
+#endif
    }
    else if (MgamePath[0])
    {

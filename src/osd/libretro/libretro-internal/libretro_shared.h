@@ -23,7 +23,10 @@
 #define PIXEL_TYPE UINT16
 #endif
 
+#include "same_cores.h"
+#ifndef CORE_NAME
 #define CORE_NAME "mame"
+#endif
 #define RETRO_PATH_MAX 512
 
 enum

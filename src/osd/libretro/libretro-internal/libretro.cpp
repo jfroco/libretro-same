@@ -716,9 +716,17 @@ void retro_get_system_info(struct retro_system_info *info)
 {
    memset(info, 0, sizeof(*info));
 
+#ifdef SAME_SYSTEM
+   info->library_name     = SAME_LIBRARY_NAME;
+#else
    info->library_name     = "MAME";
+#endif
    info->library_version  = build_version;
+#ifdef SAME_SYSTEM
+   info->valid_extensions = SAME_EXTENSIONS;
+#else
    info->valid_extensions = "cmd|zip|7z";
+#endif
    info->need_fullpath    = true;
    info->block_extract    = true;
 }

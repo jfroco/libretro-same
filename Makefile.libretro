@@ -316,6 +316,43 @@ endif
 
 ###########################################################################
 #
+#   libretro-same: single-system cores
+#
+#   make -f Makefile.libretro SAME_CORE=a7800  ->  same_a7800_libretro.so / .dll
+#
+#   Each core needs an entry here (the MAME sources to build) and one in
+#   src/osd/libretro/libretro-internal/same_cores.h (system, media option,
+#   content extensions). Without SAME_CORE this builds the regular MAME core.
+#
+###########################################################################
+
+# SOURCES:      MAME driver sources to build
+# SAME_LAYOUTS: layout files (.lay) the driver includes as .lh; MAME's makefile
+#               otherwise compresses all ~2,000 layouts in src/mame/layout/
+ifeq ($(SAME_CORE),a7800)
+	SOURCES      := src/mame/atari/a7800.cpp
+	SAME_LAYOUTS :=
+else ifneq ($(SAME_CORE),)
+$(error Unknown SAME_CORE '$(SAME_CORE)'. Supported: a7800)
+endif
+
+ifneq ($(SAME_CORE),)
+	SUBTARGET    := same_$(SAME_CORE)
+	ARCHOPTS_CXX += -DSAME_CORE -DSAME_CORE_$(SAME_CORE)
+	export ARCHOPTS_CXX
+	# MAME shares object files between subtargets, but each core is compiled
+	# with its own SAME_CORE_<name> define: give each core its own build folder.
+	BUILDDIR ?= build/same_$(SAME_CORE)
+	export BUILDDIR
+	# Use the compiler from the environment (CC=... CXX=... AR=... make ...) on Linux
+	# too, as the win block above does: without OVERRIDE_*, genie writes CC = gcc.
+	ifeq ($(platform),unix)
+		PLATFLAGS += OVERRIDE_CC=$(CC) OVERRIDE_CXX=$(CXX) OVERRIDE_AR=$(AR)
+	endif
+endif
+
+###########################################################################
+#
 #   TARGET FLAGS
 #
 ###########################################################################
@@ -329,6 +366,9 @@ ifneq ($(SUBTARGET),)
 endif
 ifneq ($(SOURCES),)
 	TARGETFLAGS += SOURCES=$(SOURCES)
+endif
+ifneq ($(SAME_CORE),)
+	TARGETFLAGS += LAYOUTS="$(SAME_LAYOUTS)"
 endif
 
 ###########################################################################

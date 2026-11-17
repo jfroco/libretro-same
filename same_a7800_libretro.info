@@ -1,0 +1,42 @@
+# Software Information
+display_name = "Atari - 7800 (SAME A7800)"
+authors = "MAMEdev|jfroco"
+supported_extensions = "a78|bin"
+corename = "SAME A7800"
+license = "GPLv2+"
+permissions = ""
+display_version = "Git"
+categories = "Emulator"
+
+# Hardware Information
+manufacturer = "Atari"
+systemname = "Atari 7800"
+systemid = "atari_7800"
+
+# Libretro Features
+supports_no_game = "false"
+database = "Atari - 7800"
+savestate = "true"
+savestate_features = "deterministic"
+cheats = "false"
+input_descriptors = "true"
+memory_descriptors = "false"
+libretro_saves = "false"
+core_options = "true"
+core_options_version = "1.0"
+load_subsystem = "false"
+hw_render = "false"
+needs_fullpath = "true"
+disk_control = "false"
+is_experimental = "true"
+
+# BIOS/Firmware
+firmware_count = 1
+
+firmware0_desc = "a7800.zip"
+firmware0_path = "a7800.zip"
+firmware0_opt = "false"
+
+notes = "(!) a7800.zip is the MAME BIOS set (7800.u7, CRC32 5d13730c). It can also go in same_a7800/bios/ or in the content's folder."
+
+description = "SAME A7800 is a S(ingle) A(rcade) M(achine) E(mulator) for libretro, built from MAME libretro (libretro-same). It includes only MAME's Atari 7800 driver and loads .a78/.bin cartridges directly, without MAME's menus."

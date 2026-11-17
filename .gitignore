@@ -50,3 +50,11 @@ regtests/chdman/temp
 regtests/jedutil/output
 /CMakeLists.txt
 /samples
+
+# libretro-same: development environment
+!/.devcontainer/
+!/.vscode/
+/.vscode/*
+!/.vscode/tasks.json
+# libretro-same: core info files
+!/same_*_libretro.info
