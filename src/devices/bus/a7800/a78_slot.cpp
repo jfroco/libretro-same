@@ -30,6 +30,8 @@
 
 #include "multibyte.h"
 
+#include <algorithm>
+
 //**************************************************************************
 //  GLOBAL VARIABLES
 //**************************************************************************
@@ -450,6 +452,16 @@ std::pair<std::error_condition, std::string> a78_cart_slot_device::call_load()
 
 			m_cart->rom_alloc(len);
 			fread(m_cart->get_rom_base(), len);
+
+			// libretro-same: .a78 files of Activision carts (Double Dragon, Rampage) store each
+			// 16K bank with its two 8K halves swapped, compared to the ROM chip dump (software
+			// list) that the a78_act mapper reads. Swap them back.
+			if (m_type == A78_ACTIVISION && len == 0x20000)
+			{
+				uint8_t *rom = m_cart->get_rom_base();
+				for (uint32_t bank = 0; bank < len; bank += 0x4000)
+					std::swap_ranges(rom + bank, rom + bank + 0x2000, rom + bank + 0x2000);
+			}
 
 			if (m_type == A78_TYPE6 || m_type == A78_TYPE8)
 				m_cart->ram_alloc(0x4000);
