@@ -116,8 +116,10 @@ void menu_main::populate()
 
 	item_append(_("menu-main", "Input Settings"), 0, (void *)INPUT_OPTIONS);
 
+#ifndef SAME_CORE // libretro-same: DIP switches are core options (same_dipswitches.h)
 	if (ui().machine_info().has_dips())
 		item_append(_("menu-main", "DIP Switches"), 0, (void *)SETTINGS_DIP_SWITCHES);
+#endif
 	if (ui().machine_info().has_configs())
 		item_append(_("menu-main", "Machine Configuration"), 0, (void *)SETTINGS_DRIVER_CONFIG);
 

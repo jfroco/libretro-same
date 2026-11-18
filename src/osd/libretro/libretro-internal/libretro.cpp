@@ -18,6 +18,7 @@
 #include "libretro.h"
 #include "libretro_shared.h"
 #include "libretro_core_options.h"
+#include "same_dipswitches.h"
 #include "libretro_vfs.h"
 
 /* forward decls / externs / prototypes */
@@ -905,6 +906,10 @@ void retro_run(void)
       update_runtime_variables(false);
    }
 
+#ifdef SAME_CORE
+   same_dip_update(updated);
+#endif
+
    if (!retro_pause)
       retro_main_loop();
    RLOOP = 1;
@@ -991,6 +996,9 @@ bool retro_load_game(const struct retro_game_info *info)
 
    retro_load_ok = true;
    update_runtime_variables(true);
+#ifdef SAME_CORE
+   same_dip_create_options();
+#endif
 
    return true;
 }
