@@ -103,7 +103,7 @@ public:
 
 	virtual bool is_reset_on_load() const noexcept override { return true; }
 	virtual const char *image_interface() const noexcept override { return "a7800_cart"; }
-	virtual const char *file_extensions() const noexcept override { return "a78"; }
+	virtual const char *file_extensions() const noexcept override { return "a78,bin"; } // libretro-same: was "a78" (No-Intro .bin, see a78_nointro.h)
 	virtual u32 unhashed_header_length() const noexcept override { return 128; }
 
 	// device_slot_interface implementation
