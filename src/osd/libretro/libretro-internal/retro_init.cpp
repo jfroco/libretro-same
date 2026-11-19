@@ -25,6 +25,7 @@
 #include "modules/font/font_module.h"
 
 #include "libretro_shared.h"
+#include "same_region.h"
 #include "libretro_vfs.h"
 
 #define UINT16 uint16_t
@@ -371,7 +372,12 @@ void Extract_AllPath(const char *srcpath)
 
 #ifdef SAME_SYSTEM
    /* libretro-same: the system is fixed, not taken from the content's folder name. */
+#ifdef SAME_SYSTEM_PAL
+   strcpy(MsystemName, same_system_name(srcpath));   /* NTSC or PAL, same_region.h */
+   log_cb(RETRO_LOG_INFO, "Region \"%s\": running %s\n", same_region, MsystemName);
+#else
    strcpy(MsystemName, SAME_SYSTEM);
+#endif
 #endif
 
    /* Get the parent path. */
@@ -655,7 +661,7 @@ static int execute_game(char *path)
    {
 #ifdef SAME_SYSTEM
       /* libretro-same: run "<system> <media option> <content path>". */
-      Add_Option(SAME_SYSTEM);
+      Add_Option(MsystemName);   /* SAME_SYSTEM, or SAME_SYSTEM_PAL (same_region.h) */
       Add_Option(SAME_MEDIA);
       Add_Option(gameName);
 #else

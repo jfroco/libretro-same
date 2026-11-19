@@ -89,6 +89,9 @@ extern char mediaType[10];
 extern const char *retro_save_directory;
 extern const char *retro_system_directory;
 extern const char *retro_content_directory;
+#ifdef SAME_SYSTEM_PAL
+extern char same_region[8];   /* libretro-same: "auto", "ntsc" or "pal" (same_region.h) */
+#endif
 
 extern int lightgun_mode;
 extern int lightgun_offscreen_mode;

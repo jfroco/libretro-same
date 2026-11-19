@@ -125,6 +125,24 @@ struct retro_core_option_v2_definition option_defs_us[] = {
       },
       "disabled"
    },
+#ifdef SAME_SYSTEM_PAL
+   /* libretro-same: NTSC or PAL machine (same_region.h) */
+   {
+      CORE_NAME "_region",
+      "Region",
+      NULL,
+      "Auto uses the region in the content's header. NTSC and PAL ignore the header. Takes effect the next time the content is loaded.",
+      NULL,
+      "system",
+      {
+         { "auto", "Auto (header)" },
+         { "ntsc", "NTSC" },
+         { "pal",  "PAL" },
+         { NULL, NULL },
+      },
+      "auto"
+   },
+#endif
    {
       CORE_NAME "_boot_to_bios",
       "Boot to BIOS",

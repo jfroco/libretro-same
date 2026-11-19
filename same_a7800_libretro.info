@@ -31,12 +31,16 @@ disk_control = "false"
 is_experimental = "true"
 
 # BIOS/Firmware
-firmware_count = 1
+firmware_count = 2
 
 firmware0_desc = "a7800.zip"
 firmware0_path = "a7800.zip"
 firmware0_opt = "false"
 
-notes = "(!) a7800.zip is the MAME BIOS set (7800.u7, CRC32 5d13730c). It can also go in same_a7800/bios/ or in the content's folder."
+firmware1_desc = "a7800p.zip (PAL)"
+firmware1_path = "a7800p.zip"
+firmware1_opt = "true"
+
+notes = "(!) a7800.zip is the MAME BIOS set (7800.u7, CRC32 5d13730c). It can also go in same_a7800/bios/ or in the content's folder.|(!) a7800p.zip is the MAME PAL BIOS set (c300558-001b.u7, CRC32 d5b61170), needed only for PAL games (Region option)."
 
 description = "SAME A7800 is a S(ingle) A(rcade) M(achine) E(mulator) for libretro, built from MAME libretro (libretro-same). It includes only MAME's Atari 7800 driver and loads .a78/.bin cartridges directly, without MAME's menus."

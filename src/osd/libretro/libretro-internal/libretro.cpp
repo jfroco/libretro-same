@@ -58,6 +58,9 @@ static int soundcpu_overclock = 100;
 const char *retro_save_directory;
 const char *retro_system_directory;
 const char *retro_content_directory;
+#ifdef SAME_SYSTEM_PAL
+char same_region[8] = "auto";
+#endif
 
 //FIXME: re-add way to handle 16/32 bit
 #ifdef M16B
@@ -383,6 +386,13 @@ static void update_runtime_variables(bool startup)
 static void check_variables(void)
 {
    struct retro_variable var = {0};
+
+#ifdef SAME_SYSTEM_PAL
+   var.key   = CORE_NAME "_region";
+   var.value = NULL;
+   if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var) && var.value)
+      snprintf(same_region, sizeof(same_region), "%s", var.value);
+#endif
 
    var.key   = CORE_NAME "_joystick_deadzone";
    var.value = NULL;

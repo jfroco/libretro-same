@@ -12,6 +12,9 @@
  *   SAME_SYSTEM        MAME machine to run
  *   SAME_MEDIA         MAME media option the content is loaded with (-cart, -cass, -flop...)
  *   SAME_EXTENSIONS    content extensions accepted by the frontend
+ *
+ * Optional:
+ *   SAME_SYSTEM_PAL    MAME machine for PAL: adds the "Region" core option (same_region.h)
  */
 
 #ifndef SAME_CORES_H
@@ -21,6 +24,7 @@
 #define CORE_NAME          "same_a7800"
 #define SAME_LIBRARY_NAME  "SAME_A7800"
 #define SAME_SYSTEM        "a7800"
+#define SAME_SYSTEM_PAL    "a7800p"
 #define SAME_MEDIA         "-cart"
 #define SAME_EXTENSIONS    "a78|bin"
 
